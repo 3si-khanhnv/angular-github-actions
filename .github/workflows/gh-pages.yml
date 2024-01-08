@@ -29,7 +29,7 @@ jobs:
 
     - name: Deploy
       if: success()
-      uses: 3si-khanhnv/angular-github-actions@v3
+      uses: 3si-khanhnv/angular-github-actions
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: dist/angular-github-actions
