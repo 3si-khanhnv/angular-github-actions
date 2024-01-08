@@ -7,7 +7,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build @glory-imo-dev/shared-components",
     "build:prod": "ng build --configuration production --base-href https://github.com/3si-khanhnv/angular-github-actions/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
