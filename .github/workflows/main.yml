@@ -76,29 +76,29 @@ jobs:
       #     release_name: ${{ steps.changelog.outputs.tag }}
       #     body: ${{ steps.changelog.outputs.clean_changelog }}
 
-      # - name: Deploy
-      #   run: |
-      #     npm run deploy
+      - name: Deploy
+        run: |
+          npm run deploy
 
-  deploy:
-    runs-on: ubuntu-latest
+  # deploy:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout branch
-        uses: actions/checkout@v2
+  #   steps:
+  #     - name: Checkout branch
+  #       uses: actions/checkout@v2
 
-      - name: Generate release tag
-        id: generate_release_tag
-        uses: 3si-khanhnv/angular-github-actions@main
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          tag_prefix: 'v'
-          tag_template: 'yyyy.mm.dd.i'
+  #     - name: Generate release tag
+  #       id: generate_release_tag
+  #       uses: 3si-khanhnv/angular-github-actions@main
+  #       with:
+  #         github_token: ${{ secrets.GITHUB_TOKEN }}
+  #         tag_prefix: 'v'
+  #         tag_template: 'yyyy.mm.dd.i'
 
-      - name: Create Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.generate_release_tag.outputs.next_release_tag }}
-          release_name: Release ${{ steps.generate_release_tag.outputs.next_release_tag }}
+  #     - name: Create Release
+  #       uses: actions/create-release@v1
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         tag_name: ${{ steps.generate_release_tag.outputs.next_release_tag }}
+  #         release_name: Release ${{ steps.generate_release_tag.outputs.next_release_tag }}
