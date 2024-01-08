@@ -43,7 +43,7 @@ jobs:
       - name: Build
         run: |
             npm run build:prod
-
+           
     #   - name: Lint
     #     run: |
     #       npm run lint
@@ -76,10 +76,20 @@ jobs:
       #     release_name: ${{ steps.changelog.outputs.tag }}
       #     body: ${{ steps.changelog.outputs.clean_changelog }}
 
-      - name: Deploy
-        run: |
-          npm run deploy
+      # - name: Deploy
+      #   run: |
+      #     npm run deploy
 
+
+  release:
+    name: "Release"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: 3si-khanhnv/angular-github-actions@lastest
+        with:
+            repo_token: "${{ secrets.GITHUB_TOKEN }}"
+            prerelease: false
   # deploy:
   #   runs-on: ubuntu-latest
 
