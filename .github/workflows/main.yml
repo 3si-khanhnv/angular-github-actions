@@ -52,7 +52,7 @@ jobs:
 
       - name: Conventional Changelog Action
         id: changelog
-        uses: 3si-khanhnv/angular-github-actions@main
+        uses: ./.github/workflows/main.yml
         with:
           github-token: ${{ secrets.TOKEN_GITHUB_ACTION }}
           output-file: "false"
