@@ -1,0 +1,122 @@
+name: E2E Testing
+
+on:
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: frontend-e2e
+  IBMCLOUD_REGION: eu-de
+  REGISTRY_HOSTNAME: de.icr.io
+  CLUSTER_NAME: g-enterprise-dev
+  NAMESPACE: ${{secrets.ICR_NAMESPACE}}
+  IBMCLOUD_API_KEY: ${{secrets.IBMCLOUD_API_KEY}}
+  K8S_E2E_NAMESPACE: e2e-imo
+  K8S_MANIFESTS: ./cypress/k8s-manifests/
+
+jobs:
+  e2e:
+    name: perform e2e testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          submodules: true
+          token: ${{secrets.ACCESS_TOKEN}}
+
+      - name: Set submodule branch
+        run: git config -f .gitmodules submodule.src/assets/i18n.branch develop
+
+      - name: Run update submodule
+        run: npm run submodule-update
+
+      - name: Setup NodeJs
+        uses: actions/setup-node@v1
+        with:
+          node-version: "18.12.0"
+
+      - name: Install IBM Cloud CLI
+        run: |
+          curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
+          ibmcloud --version
+          ibmcloud config --check-version=false
+          ibmcloud plugin install -f container-registry
+          ibmcloud plugin install -f container-service
+
+      - name: Authenticate with IBM Cloud CLI
+        run: |
+          ibmcloud login -r ${IBMCLOUD_REGION} -g g-enterprise --apikey ${IBMCLOUD_API_KEY}
+          ibmcloud cr region-set "${IBMCLOUD_REGION}"
+          ibmcloud cr login
+
+      - name: create ".npmrc"
+        run: 'echo -e "//npm.pkg.github.com/:_authToken=$TOKEN\n@glory-iot-dev:registry=\"https://npm.pkg.github.com\"" > .npmrc'
+        shell: bash
+        env:
+          TOKEN: ${{secrets.COMMON_GIT_TOKEN}}
+
+      - name: Docker image info
+        id: imageInfo
+        run: |
+          tag=$(npx -c 'echo "$npm_package_version"')
+          image=${REGISTRY_HOSTNAME}/${NAMESPACE}/${IMAGE_NAME}
+          registry=${image}:${tag}
+
+          echo "tag=${tag}" >> $GITHUB_OUTPUT
+          echo "image=${image}" >> $GITHUB_OUTPUT
+          echo "registry=${registry}" >> $GITHUB_OUTPUT
+
+      - name: Build docker image
+        run: |
+          docker build -t ${{steps.imageInfo.outputs.registry}} -f Dockerfile-e2e .
+          docker push ${{steps.imageInfo.outputs.registry}}
+
+      - name: Deploy e2e env
+        run: |
+          cat << EOF > ./kustomization.yaml
+          apiVersion: kustomize.config.k8s.io/v1beta1
+          kind: Kustomization
+          bases:
+            - ${K8S_MANIFESTS}
+          images:
+            - name: "${{steps.imageInfo.outputs.image}}"
+              newTag: "${{steps.imageInfo.outputs.tag}}"
+          EOF
+
+          cat ./kustomization.yaml
+
+          ibmcloud target -r jp-tok
+          ibmcloud ks cluster config --cluster g-enterprise-dev
+          kubectl apply -k ./
+
+      - name: setup e2e
+        run: |
+          npm ci
+
+      - name: Run e2e
+        run: |
+          npm run e2e:ci
+
+      # - uses: cypress-io/github-action@v2
+      - uses: actions/upload-artifact@v1
+        name: Upload artifacts if error occurs
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+        continue-on-error: true
+
+      # - uses: cypress-io/github-action@v2
+      - uses: actions/upload-artifact@v1
+        name: Upload snapshots if error occurs
+        if: failure()
+        with:
+          name: cypress-snapshots
+          path: cypress/integration/ci/snapshot_tests/__image_snapshots__
+        continue-on-error: true
+
+      - name: Destroy e2e env
+        if: always()
+        run: |
+          kubectl delete -k ./
