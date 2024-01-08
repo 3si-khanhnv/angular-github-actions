@@ -1,8 +1,6 @@
 name: Angular GitHub CI/CD
 on:
   push:
-    tags:
-      - v*
     branches:
       - main
 jobs:
@@ -14,7 +12,7 @@ jobs:
         node-version: [18.x]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
@@ -42,73 +40,33 @@ jobs:
 
       - name: Build
         run: |
-            npm run build:prod
-           
-    #   - name: Lint
-    #     run: |
-    #       npm run lint
+          npm run build:prod
 
-    #   - name: Test
-    #     run: |
-    #         npm run test:headless
-      # - name: Create release
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     tag: ${{ github.ref_name }}
+      # - name: Lint
       #   run: |
-      #     echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
-      #     echo "Tag name from github.ref_name: ${{  github.ref_name }}"
+      #     npm run lint
 
-      # - name: Conventional Changelog Action
-      #   id: changelog
-      #   uses: 3si-khanhnv/angular-github-actions@main
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     output-file: "false"
-
-      # - name: Create Release
-      #   uses: actions/create-release@v1
-      #   if: ${{ steps.changelog.outputs.skipped == 'false' }}
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     tag_name: ${{ steps.changelog.outputs.tag }}
-      #     release_name: ${{ steps.changelog.outputs.tag }}
-      #     body: ${{ steps.changelog.outputs.clean_changelog }}
-
-      # - name: Deploy
+      # - name: Test
       #   run: |
-      #     npm run deploy
+      #     npm run test -- --prod
 
-
-  release:
-    name: "Release"
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: 3si-khanhnv/angular-github-actions@lastest
+      - name: Conventional Changelog Action
+        id: changelog
+        uses: 3si-khanhnv/angular-github-actions@main
         with:
-            repo_token: "${{ secrets.GITHUB_TOKEN }}"
-            prerelease: false
-  # deploy:
-  #   runs-on: ubuntu-latest
+          github-token: ${{ secrets.TOKEN_GITHUB_ACTION }}
+          output-file: "false"
 
-  #   steps:
-  #     - name: Checkout branch
-  #       uses: actions/checkout@v2
+      - name: Create Release
+        uses: actions/create-release@v1
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB_ACTION }}
+        with:
+          tag_name: ${{ steps.changelog.outputs.tag }}
+          release_name: ${{ steps.changelog.outputs.tag }}
+          body: ${{ steps.changelog.outputs.clean_changelog }}
 
-  #     - name: Generate release tag
-  #       id: generate_release_tag
-  #       uses: 3si-khanhnv/angular-github-actions@main
-  #       with:
-  #         github_token: ${{ secrets.GITHUB_TOKEN }}
-  #         tag_prefix: 'v'
-  #         tag_template: 'yyyy.mm.dd.i'
-
-  #     - name: Create Release
-  #       uses: actions/create-release@v1
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #       with:
-  #         tag_name: ${{ steps.generate_release_tag.outputs.next_release_tag }}
-  #         release_name: Release ${{ steps.generate_release_tag.outputs.next_release_tag }}
+      - name: Deploy
+        run: |
+          npm run deploy
