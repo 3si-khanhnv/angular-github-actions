@@ -50,12 +50,12 @@ jobs:
     #     run: |
     #         npm run test:headless
 
-    #   - name: Conventional Changelog Action
-    #     id: changelog
-    #     uses: 3si-khanhnv/angular-github-actions@main
-    #     with:
-    #       github-token: ${{ secrets.TOKEN_GITHUB_ACTION }}
-    #       output-file: "false"
+      - name: Conventional Changelog Action
+        id: changelog
+        uses: /home/runner/work/angular-github-actions/angular-github-actions
+        with:
+          github-token: ${{ secrets.TOKEN_GITHUB_ACTION }}
+          output-file: "false"
 
       - name: Create Release
         uses: actions/create-release@v1
