@@ -52,7 +52,7 @@ jobs:
 
       - name: Conventional Changelog Action
         id: changelog
-        uses: TriPSs/conventional-changelog-action@v3
+        uses: 3si-khanhnv/angular-github-actions@main
         with:
           github-token: ${{ secrets.TOKEN_GITHUB_ACTION }}
           output-file: "false"
