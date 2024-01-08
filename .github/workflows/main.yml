@@ -1,6 +1,8 @@
 name: Angular GitHub CI/CD
 on:
   push:
+    tags:
+      - v*
     branches:
       - main
 jobs:
