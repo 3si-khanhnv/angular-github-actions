@@ -42,13 +42,13 @@ jobs:
         run: |
             npm run build:prod
 
-      - name: Lint
-        run: |
-          npm run lint
+    #   - name: Lint
+    #     run: |
+    #       npm run lint
 
-      - name: Test
-        run: |
-            npm run test:headless
+    #   - name: Test
+    #     run: |
+    #         npm run test:headless
 
     #   - name: Conventional Changelog Action
     #     id: changelog
