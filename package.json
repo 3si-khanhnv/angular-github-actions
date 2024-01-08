@@ -8,11 +8,10 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build @glory-imo-dev/shared-components",
-    "build:prod": "ng build --configuration production --base-href https://github.com/3si-khanhnv/angular-github-actions/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:headless": "ng test --watch=false --browsers=ChromeHeadless",
-    "deploy": "ng deploy --base-href=https://github.com/3si-khanhnv/angular-github-actions/"
+    "deploy": "ng deploy --base-href=/angular-github-actions/"
   },
   "dependencies": {
     "@angular/animations": "^15.2.5",
@@ -32,6 +31,7 @@
     "@angular/cli": "~15.2.4",
     "@angular/compiler-cli": "^15.2.5",
     "@types/jasmine": "~4.3.1",
+    "angular-cli-ghpages": "^1.0.7",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.1",
     "karma-chrome-launcher": "~3.1.1",
