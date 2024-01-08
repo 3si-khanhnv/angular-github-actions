@@ -11,7 +11,8 @@
     "build:prod": "ng build --configuration production --base-href https://github.com/3si-khanhnv/angular-github-actions/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "test:headless": "ng test --watch=false --browsers=ChromeHeadless"
+    "test:headless": "ng test --watch=false --browsers=ChromeHeadless",
+    "deploy": "ng deploy --base-href=/angular-github-actions/"
   },
   "dependencies": {
     "@angular/animations": "^15.2.5",
