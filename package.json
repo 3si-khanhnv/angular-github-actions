@@ -1,6 +1,6 @@
 {
   "name": "angular-github-actions",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Application example built with Angular 15 and hosted on GitHub Pages using GitHub Actions.",
   "license": "MIT",
   "private": true,
