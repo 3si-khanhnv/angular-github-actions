@@ -7,8 +7,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build @glory-imo-dev/shared-components",
+    "build_lib": "ng build @glory-imo-dev/shared-components",
+    "npm_pack": "cd dist/glory-imo-dev/shared-components && npm pack",
     "build:prod": "ng build --configuration production",
+    "package": "npm run build_lib && npm run npm_pack",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:headless": "ng test --watch=false --browsers=ChromeHeadless",
