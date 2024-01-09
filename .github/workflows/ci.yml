@@ -2,10 +2,7 @@ name: CI
 on:
   push:
     branches:
-      - '*'
-      - '*/*'
-      - '**'
-      - '!main'
+      - 'main'
 jobs:
   CI:
     runs-on: ubuntu-latest
