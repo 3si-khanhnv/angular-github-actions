@@ -21,7 +21,7 @@ jobs:
     #     run: npm run coverage:library
       - name: Build
         run: npm run build
-  
+
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
