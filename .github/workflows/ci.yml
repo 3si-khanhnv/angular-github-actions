@@ -20,12 +20,12 @@ jobs:
       - name: Install node modules
         run: npm install
       - name: Build Library
-        run: npm run package
+        run: npm run build_lib
 
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref_name }}-${{github.run_number}}
+          tag: ${{ github.run_id }}.${{github.run_number}}.${{github.run_attempt}}
         run: |
             gh release create "$tag" \
                 --repo="$GITHUB_REPOSITORY" \
