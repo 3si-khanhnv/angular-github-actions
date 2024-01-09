@@ -12,7 +12,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:headless": "ng test --watch=false --browsers=ChromeHeadless",
-    "deploy": "ng deploy --base-href=/angular-github-actions/"
+    "deploy": "ng deploy --base-href=/angular-github-actions/",
+    "prepare": "ng build"
   },
   "dependencies": {
     "@angular/animations": "^15.2.5",
