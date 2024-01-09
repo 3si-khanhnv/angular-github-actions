@@ -8,6 +8,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:prod": "ng build --configuration production",
     "build-library": "ng build @glory-imo-dev/shared-components",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
