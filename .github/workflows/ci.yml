@@ -1,6 +1,8 @@
 name: CI
 on:
   push:
+    tags:
+        - v*
     branches:
       - 'main'
 jobs:
@@ -19,3 +21,16 @@ jobs:
     #     run: npm run coverage:library
       - name: Build
         run: npm run build
+  release:
+    name: Release pushed tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref_name }}
+        run: |
+            gh release create "$tag" \
+                --repo="$GITHUB_REPOSITORY" \
+                --title="${GITHUB_REPOSITORY#*/} ${tag#v}" \
+                --generate-notes
