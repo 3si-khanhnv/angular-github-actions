@@ -1,4 +1,4 @@
-name: CI
+name: Release
 on:
   push:
     tags:
@@ -6,7 +6,7 @@ on:
     branches:
       - 'main'
 jobs:
-  CI:
+  release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -21,10 +21,7 @@ jobs:
     #     run: npm run coverage:library
       - name: Build
         run: npm run build
-  release:
-    name: Release pushed tag
-    runs-on: ubuntu-latest
-    steps:
+  
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
