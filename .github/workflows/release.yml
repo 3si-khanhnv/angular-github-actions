@@ -1,0 +1,85 @@
+name: Release
+on:
+  push:
+    tags:
+        - v*
+    branches:
+      - 'main'
+env:
+    version: 0
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    strategy:
+        matrix:
+          node: [18]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node Js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          registry-url: https://npm.pkg.github.com/
+          scope: "@3si"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Library
+        run: |
+          npm run build
+
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        #   https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
+          tag: 0.${{github.run_attempt}}.${{github.run_number}}
+        run: |
+            gh release create "$tag" \
+                --repo="$GITHUB_REPOSITORY" \
+                --title="v${tag#v}" \
+                --generate-notes
+      - run: echo "version=$(npm show @nandhirajan-tfi/my-package version)" >> $GITHUB_ENV
+      - run: npm version ${{env.version}} --no-git-tag-version --allow-same-version
+      - run: npm version patch -m "[RELEASE] %s" --no-git-tag-version --allow-same-version
+      - run: npm publish
+        env:
+          credentials: ${{secrets.GITHUB_TOKEN}}
+
+# name: Release
+# on:
+#   push:
+#     tags:
+#         - v*
+#     branches:
+#       - 'main'
+# jobs:
+#   release:
+#     runs-on: ubuntu-latest
+#     strategy:
+#         matrix:
+#           node: [18]
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
+#       - uses: actions/setup-node@v3
+#         with:
+#           node-version: ${{ matrix.node }}
+#       - name: Install node modules
+#         run: npm install
+#       - name: Build Library
+#         run: |
+#           npm run build
+
+#       - name: Release
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         #   https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
+#           tag: v${{github.run_number}}
+#         run: |
+#             gh release create "$tag" \
+#                 --repo="$GITHUB_REPOSITORY" \
+#                 --title="v${tag#v}" \
+#                 --generate-notes

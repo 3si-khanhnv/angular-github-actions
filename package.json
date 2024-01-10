@@ -1,9 +1,8 @@
 {
-  "name": "angular-github-actions",
+  "name": "@3si/shared-components",
   "version": "1.0.0",
   "description": "Application example built with Angular 15 and hosted on GitHub Pages using GitHub Actions.",
   "license": "MIT",
-  "private": true,
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -13,6 +12,14 @@
     "test": "ng test",
     "test:headless": "ng test --watch=false --browsers=ChromeHeadless",
     "deploy": "ng deploy --base-href=/@glory-imo-dev/shared-components/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/3si-khanhnv/angular-github-actions/tree/main/projects/glory-imo-dev/shared-components"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
   },
   "dependencies": {
     "@angular/animations": "^15.2.5",
