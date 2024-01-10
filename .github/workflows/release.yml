@@ -44,6 +44,8 @@ jobs:
       - run: echo "version=$(npm show @nandhirajan-tfi/my-package version)" >> $GITHUB_ENV
       - run: npm version ${{env.version}} --no-git-tag-version --allow-same-version
       - run: npm version patch -m "[RELEASE] %s" --no-git-tag-version --allow-same-version
+      - name: Authenticate with private NPM package
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
       - run: npm publish
         env:
           credentials: ${{secrets.GITHUB_TOKEN}}
