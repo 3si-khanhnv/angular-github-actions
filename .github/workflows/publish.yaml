@@ -15,7 +15,8 @@ jobs:
           node-version: "18.x"
           registry-url: "https://npm.pkg.github.com"
           scope: "@3si-khanhnv"
-      - run: npm install
-      - run: npm run publish
+      - run: |
+            npm install
+            npm run publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
