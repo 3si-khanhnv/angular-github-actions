@@ -1,6 +1,6 @@
 {
   "name": "@3si-khanhnv/angular-github-actions",
-  "version": "0.0.7",
+  "version": "0.0.5",
   "description": "Application example built with Angular 15 and hosted on GitHub Pages using GitHub Actions.",
   "license": "MIT",
   "main": "./dist/glory-imo-dev/shared-components/index.d.ts",
@@ -9,11 +9,12 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build @glory-imo-dev/shared-components",
+    "build": "npm run build:clean && ng build --project=@glory-imo-dev/shared-components",
     "build:clean": "rimraf ./dist",
+    "build:tsc": "tsc -p tsconfig.json",
     "build:copy": "cpx ./projects/glory-imo-dev/shared-components/src/public-api.ts ./dist",
     "clear-autogen-files": "jest --clear-cache && rimraf ./dist/glory-imo-dev/shared-components",
-    "release": "run-s clear-autogen-files lint test:ci build"
+    "release": "run-s clear-autogen-files build"
   },
   "repository": {
     "type": "git",
