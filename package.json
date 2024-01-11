@@ -14,7 +14,7 @@
     "build:tsc": "tsc -p tsconfig.json",
     "build:copy": "cpx ./projects/glory-imo-dev/shared-components/src/public-api.ts ./dist",
     "clear-autogen-files": "jest --clear-cache && rimraf ./dist/glory-imo-dev/shared-components",
-    "release": "npm run clear-autogen-files && npm run build"
+    "release": "npm run build"
   },
   "repository": {
     "type": "git",
