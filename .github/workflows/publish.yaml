@@ -17,6 +17,8 @@ jobs:
           scope: "@3si-khanhnv"
       - run: npm install
       - run: echo "//registry.npmjs.org/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
-      - run: npm run publish
+      - run: |
+            npm run build
+            npm run publish
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
