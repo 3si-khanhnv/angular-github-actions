@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'lib-shared-components',
   template: `
     <p>
-      shared-components works hehehehehe!
+      shared-components works hehehehehe 1234567890!
     </p>
   `,
   styles: [

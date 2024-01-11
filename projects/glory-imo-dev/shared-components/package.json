@@ -1,6 +1,6 @@
 {
-  "name": "@glory-imo-dev/shared-components",
-  "version": "0.0.1",
+  "name": "@3si-khanhnv/angular-github-actions",
+  "version": "0.0.9",
   "peerDependencies": {
     "@angular/common": "^15.2.0",
     "@angular/core": "^15.2.0"
